@@ -71,20 +71,30 @@ export namespace modCreate {
             const rssChannel = new RssChannel(title, link, description);
             const items = <Array<any>> atomFeed.entry;
             let itemsLength = items.length;
-
-            if (itemsLength  > 3) {
-                itemsLength = 3;
-            }
+            let itemsAdded = 0;
 
             for (let i = 0; i < itemsLength; i++) {
                 const item = items[i];
-                const rssChannelItem = new RssChannelItem(
-                    this.getFromUnderscore(item.title[0]),
-                    this.locateHtmlNonReplyLink(item.link),
-                    'Atom does not support having a description');
+                const title = item.title[0];
+                const links = item.link;
+                try {
+                    const rssChannelItem = new RssChannelItem(
+                        this.getFromUnderscore(title),
+                        this.locateHtmlNonReplyLink(links),
+                        'Atom does not support having a description');
 
-                rssChannelItem.parent = rssChannel;
-                rssChannel.items.push(rssChannelItem);
+                    rssChannelItem.parent = rssChannel;
+                    rssChannel.items.push(rssChannelItem);
+                    itemsAdded += 1;
+
+                } catch(ex) {
+                    logMessage(logMessagePrefix + 'parseAtom() - Exception');
+                    logMessage(ex);
+                }
+
+                if (itemsAdded >= 3) {
+                    break;
+                }
             }
 
             console.dir(rssChannel);

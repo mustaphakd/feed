@@ -18,3 +18,5 @@ then, open your favorite web browser and navigate to "http://localhost" or  pref
 
 As you interact with app, the powershell console will output the log 
 
+#### see readme file under src/Feed.Spa
+
