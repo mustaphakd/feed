@@ -1,0 +1,19 @@
+{
+  "name": "front-end-tooling",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "cd ../../Feed.Spa & ng",
+    "start": "cd ../../Feed.Spa & ng serve",
+    "build": "cd ../../Feed.Spa & ng build",
+    "build-prod": "cd ../../Feed.Spa & ng build --prod",
+	"run-install": "cd ../../Feed.Spa & npm install",
+    "test": "cd ../../Feed.Spa & ng test",
+    "lint": "cd ../../Feed.Spa & ng lint",
+    "e2e": "cd ../../Feed.Spa & ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

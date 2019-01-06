@@ -1,0 +1,59 @@
+<nav class="nav-group">
+    <h5 class="nav-group-title">Categories</h5>
+
+    <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="mat-tree" #mattreeref >
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle #matnoderef>
+         <!-- <li class="mat-tree-node">
+              <button mat-icon-button disabled></button>
+              {{node.title}}
+            </li> -->
+            <span 
+                matTooltip="{{node.title}}"
+                matTooltipPosition="above"
+                matRipple [matRippleColor]="blue"
+                (click)="selectChannelItem(node)"  
+                class="list-group-header" 
+                style="padding-top:1px!important;padding-bottom:1px!important;">
+            {{node.title}}
+          </span>
+      </mat-tree-node>
+
+      <mat-nested-tree-node   *matTreeNodeDef="let node; when: hasNestedChild">
+        <div class="list-group" 
+        (mouseenter)="setMouseOver(node)"
+        (mouseleave)="mouseOverBlur()">
+          <span mat-icon-button matTreeNodeToggle
+          [attr.aria-label]="'toggle ' + node.title">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </span>
+        <span 
+          (click)="selectChannel(node)" 
+          (mouseenter)="setMouseOver(node)" 
+          (mouseleave)="mouseOverBlur()" >{{node.title}}</span>
+        </div>
+        <div 
+        (mouseenter)="setMouseOver(node)" 
+        (mouseleave)="mouseOverBlur()"
+        [style.display]=" isMouseOver(node) ? 'inline-block' : 'none'"
+        (click)="removeChannel(node)" class="channel-remove-icon"> <a aria-label="remove channel" ><mat-icon>remove</mat-icon></a></div>
+        <ul  [class.tree-invisible]="!nestedTreeControl.isExpanded(node)" >
+          <ng-container matTreeNodeOutlet></ng-container>
+        </ul>
+      </mat-nested-tree-node>
+    </mat-tree>
+    
+    <!--
+    <div class="list-group" *ngFor="let rssChannel of rssChannels" >{{rssChannel.title}}
+      <span *ngFor="let item of rssChannel.items"
+            matTooltip="{{item.title}}"
+            matTooltipPosition="above"
+            matRipple [matRippleColor]="blue"
+            (click)="selectChannelItem(item, rssChannel)"  
+            class="list-group-header" 
+            style="padding-top:1px!important;padding-bottom:1px!important;">
+        {{item.title}}
+      </span>
+    </div>   --> 
+  </nav>

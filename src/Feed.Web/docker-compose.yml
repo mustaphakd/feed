@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  feed.web.backend:
+    image: ${DOCKER_REGISTRY}feedwebbackend
+    build:
+      context: .
+      dockerfile: Feed.Web.Backend/Dockerfile

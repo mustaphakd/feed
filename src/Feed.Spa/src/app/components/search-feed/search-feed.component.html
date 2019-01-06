@@ -1,0 +1,15 @@
+<form [formGroup]="formEntry">
+ <mat-form-field>
+    <input name="search" [class.valid]="isValid" required [class.invalid]="isInvalid" formControlName="search" data-test-id="root-feed-search-input" matInput  type="search" placeholder="paste or type new feed url"  class="search" />
+  <span matSuffix style="cursor:pointer;" class="icon icon-search" ></span>          
+  </mat-form-field>
+  <span [class.disabled]="! IsSaveEnabled"  data-test-id="feed-search-save-btn-container" >
+    <button mat-icon-button [disabled]="! IsSaveEnabled" (click)="saveUrl(value)" >
+      <mat-icon style="color:slategrey;" aria-label="Save feed">save</mat-icon>
+    </button>
+  </span> 
+</form>
+<!--
+
+ #searchRef
+-->

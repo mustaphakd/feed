@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>aspnet-Feed.Web.Backend-441B228B-BC09-4C2B-80A2-53F946F4EF84</UserSecretsId>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" PrivateAssets="All" />
+    <PackageReference Include="Serilog" Version="2.7.1" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Feed.Web.Services.Core\Feed.Web.Services.Core.csproj" />
+    <ProjectReference Include="..\Feed.Web.Services.Models\Feed.Web.Services.Models.csproj" />
+    <ProjectReference Include="..\Feed.Web.Services\Feed.Web.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Home\Reader.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+  
+  <Target Name="NodeInstalled">
+    <Exec Command="node - -version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+    </Exec>
+  </Target>
+  
+  <Target Name="DebugRunNgBuild" AfterTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
+    <CallTarget Targets="NodeInstalled" />
+    <Message Importance="high" Text="Install packages..." />
+    <Exec Command="npm run-script run-install" />
+    <Message Importance="high" Text="Performing debug build " />
+    <Exec Command="npm run-script build" />
+    <CallTarget Targets="MoveDistTowwwroot" />
+  </Target>
+  
+  <Target Name="ReleaseRunNgBuild" AfterTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
+    <CallTarget Targets="NodeInstalled" />
+    <Message Importance="high" Text="Install packages..." />
+    <Exec Command="npm run-script run-install" />
+    <Message Importance="high" Text="Performing production build " />
+    <Exec Command="npm run-script build-prod" />
+    <CallTarget Targets="MoveDistTowwwroot" />
+  </Target>
+  
+  <Target Name="MoveDistTowwwroot">
+    <ItemGroup>
+      <MySourceFiles Include= "..\..\Feed.Spa\dist\feedSpa\**\*.*" />
+    </ItemGroup>
+    <Copy 
+      SourceFiles="@(MySourceFiles)"
+      DestinationFolder="$(MSBuildProjectDirectory)\wwwroot\dist\%(RecursiveDir)"
+      SkipUnchangedFiles="true"
+      OverwriteReadOnlyFiles="true"
+      Retries="3"
+      RetryDelayMilliseconds="300"/>
+  </Target>
+  
+  <!--<Target Name="FrontEndDistDirCppying">
+    <Message Importance="high" Text="Copying front end dist over to .NET Core wwwroot"/>
+    <ItemGroup>
+      
+    </ItemGroup>
+  </Target> -->
+
+</Project>

@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/purple-green.css";
+@import ".//assets/photon-0.1.2-dist/css/photon.min.css";
+
+
+html, body { height: 100%; margin-top: 0px; }
+body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.disabled {
+  pointer-events: none;
+  cursor: pointer;
+}
+.notification-counter {
+  cursor: pointer;
+}

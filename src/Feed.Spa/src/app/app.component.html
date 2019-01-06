@@ -1,0 +1,67 @@
+<div class="window" style="margin-top:50px;margin-bottom:2px;margin-right:2px;">
+
+    <!-- .toolbar-header sits at the top of your app -->
+    <header class="toolbar toolbar-header">
+      <h1 class="title"><span class="nav-group-item" style="display: inline-block;"><span class="icon icon-rss"></span>ModFeed</span></h1>
+      
+      ||readingViews||:
+
+      <span class="nav-group-item" style="display: inline-flex;"> <!--  -->
+        <input type="radio" class="radio" name="viewSelection" (click)="readingView='singleColumn'" value="singleColumn" /><span class="icon icon-doc"></span>
+      </span>
+
+      
+      <span class="nav-group-item" style="display: inline-flex;"> <!--  -->
+        <input type="radio" class="radio" checked name="viewSelection" (click)="readingView='newspaper'" value="newspaper" /><span class="icon icon-newspaper"></span>
+      </span>
+
+      
+      <span class="nav-group-item" style="display: inline-flex;"> <!--  -->
+        <input type="radio" class="radio" name="viewSelection"  (click)="readingView='twoColumns'" value="twoColumns" /><span class="icon icon-book-open"></span>
+      </span>
+
+      
+      <span class="nav-group-item" style="display: inline-flex;"> <!--  -->
+        <input type="radio" class="radio" name="viewSelection" (click)="readingView='threeColumns'" value="threeColumns" /><span class="icon icon-menu" style="transform: rotate(90deg);margin-top: 1px;"></span>
+      </span>
+
+      <span class="nav-group-item pull-right" style="display: inline-flex; background-color: transparent!important;margin-top: -18px;"> <!--  -->
+      <search-feed (urlSaved)="saveUrl($event)"></search-feed>
+      </span>
+        
+    </header>
+
+    <!-- Your app's content goes inside .window-content -->
+    <div class="window-content">
+      <div class="pane-group">
+        <div class="pane pane-sm sidebar">
+          <channels-tree (rssChannelSelected)="rssChannelSelected($event)" (rssChannelItemSelected)="rssChannelItemSelected($event)" ></channels-tree>
+        </div>
+
+        <div class="pane" *ngIf='readingView=="singleColumn" || readingView=="threeColumns" || readingView=="twoColumns"'  id="firstFramePane" >
+            <!-- <iframe *ngIf='firstRssChannelItemLink !== null' [src]="firstRssChannelItemLink" id="firstFrame" (load)="frameLoaded('firstFrame', 'firstFramePane')"  min-width="300" min-height="300" frameBorder="0">Browser not compatible.</iframe> -->
+            <frame-host  id="firstFrame" (load)="frameLoaded('firstFrame', 'firstFramePane')" style="width:100%;height:100%;" *ngIf='firstRssChannelItemLink !== null' [frameUrl] = "firstRssChannelItemLink" ></frame-host>
+         </div>
+
+         <div class="pane" *ngIf='readingView=="newspaper"' id="secondFramePane" >
+            <!-- <iframe *ngIf='firstRssChannelItemLink !== null'  [src]="firstRssChannelItemLink" id="secondFrame" (load)="frameLoaded('secondFrame', 'secondFramePane')" min-width="300" min-height="300" frameBorder="0">Browser not compatible.</iframe> -->
+            <frame-host  id="secondFrame" (load)="frameLoaded('secondFrame', 'secondFramePane')" style="width:100%;height:100%;" *ngIf='firstRssChannelItemLink !== null' [frameUrl] = "firstRssChannelItemLink" ></frame-host>
+         </div>
+
+         <div class="pane" *ngIf='readingView=="twoColumns" || readingView=="threeColumns"' id="thirdFramePane">
+           <!--<iframe *ngIf='secondRssChannelItemLink !== null'  [src]="secondRssChannelItemLink" id="thirdFrame" (load)="frameLoaded('thirdFrame', 'thirdFramePane')" min-width="300" min-height="300" frameBorder="0">Browser not compatible.</iframe>  -->
+           <frame-host id="thirdFrame" (load)="frameLoaded('thirdFrame', 'thirdFramePane')" style="width:100%;height:100%;" *ngIf='secondRssChannelItemLink !== null' [frameUrl] = "secondRssChannelItemLink" ></frame-host>
+         </div>
+
+         <div class="pane" *ngIf='readingView=="threeColumns"' id="fourthFramePane">
+           <!-- <iframe *ngIf='thirdRssChannelItemLink !== null'  [src]="thirdRssChannelItemLink" id="fourthFrame" (load)="frameLoaded('fourthFrame', 'fourthFramePane')" min-width="300" min-height="300" frameBorder="0">Browser not compatible.</iframe> -->
+           <frame-host id="fourthFrame" (load)="frameLoaded('fourthFrame', 'fourthFramePane')" style="width:100%;height:100%;" *ngIf='thirdRssChannelItemLink !== null' [frameUrl] = "thirdRssChannelItemLink" ></frame-host>
+         </div>
+      </div>
+    </div>
+
+    <footer class="toolbar toolbar-footer">
+        <h1 class="title">Footer</h1>
+    </footer>
+    
+  </div>
